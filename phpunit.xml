@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+>
+    <testsuites>
+        <testsuite name="Unit">
+            <directory>tests/Unit</directory>
+        </testsuite>
+        <testsuite name="Feature">
+            <directory>tests/Feature</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory>app</directory>
+        </include>
+    </source>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+        <env name="APP_MAINTENANCE_DRIVER" value="file"/>
+        <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="BROADCAST_CONNECTION" value="null"/>
+        <env name="CACHE_STORE" value="array"/>
+        <env name="DB_CONNECTION" value="sqlite"/>
+        <env name="DB_DATABASE" value=":memory:"/>
+        <env name="DB_URL" value=""/>
+        <env name="MAIL_MAILER" value="array"/>
+        <env name="QUEUE_CONNECTION" value="sync"/>
+        <!-- Stockage de secours (voir DECISIONS.md "Stockage hybride") : vide par
+             défaut en test, quel que soit le .env local de la machine — un test
+             qui stocke un fichier ne doit jamais dépendre d'un vrai MinIO/S3 en
+             tâche de fond. ReplicateFichierJobTest active `s3_backup` explicitement
+             pour vérifier le comportement de copie. -->
+        <env name="AWS_BACKUP_BUCKET" value=""/>
+        <!-- Conformité de l'archivage (2026-10-30) : scellement des empreintes et
+             copie PDF/A automatiques désactivés par défaut en test (même raison que
+             ci-dessus) ; IntegriteArchivageTest les réactive explicitement. -->
+        <env name="ARCHIVAGE_SCELLEMENT_AUTO" value="false"/>
+        <env name="ARCHIVAGE_PDFA_AUTO" value="false"/>
+        <env name="ARCHIVAGE_APERCU_AUTO" value="false"/>
+        <!-- Chiffrement des fichiers (2026-11-09) : clé FIXE réservée aux tests
+             (« gec-cle-de-test-uniquement-32oct »), jamais celle du .env. -->
+        <env name="GEC_FICHIERS_CLE" value="base64:Z2VjLWNsZS1kZS10ZXN0LXVuaXF1ZW1lbnQtMzJvY3Q="/>
+        <env name="GEC_FICHIERS_CLE_ID" value="1"/>
+        <env name="GEC_FICHIERS_CLES_PRECEDENTES" value=""/>
+        <env name="SESSION_DRIVER" value="array"/>
+        <env name="PULSE_ENABLED" value="false"/>
+        <env name="TELESCOPE_ENABLED" value="false"/>
+        <env name="NIGHTWATCH_ENABLED" value="false"/>
+    </php>
+</phpunit>
